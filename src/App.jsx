@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import './App.css'
 import { URL } from './constant'
+import Answer from './components/Answers'
 
 function App() {
   const [question, setQuestion] = useState('')
@@ -21,8 +22,11 @@ function App() {
       body:JSON.stringify(payload)
     })
      response = await response.json()
-     console.log(response.candidates[0].content.parts[0].text)
-     setResult(response.candidates[0].content.parts[0].text)
+     let dataString=response.candidates[0].content.parts[0].text
+     dataString=dataString.split("* ")
+     dataString=dataString.map((item)=>item.trim())
+    //  console.log(dataString)
+     setResult(dataString)
   }
 
   return (
@@ -34,7 +38,15 @@ function App() {
         <div className='col-span-4 p-10'>
           <div className='container h-120 overflow-x-scroll'>
             <div className='text-white'>
-            {result}
+            {/* {result} */}
+            <ul>
+            {result && result.map((item,index)=>(
+              <li className='text-left p-2'><Answer ans={item} key={index}/></li>
+            ))}
+            </ul>
+            
+            
+            
             </div>
             
           </div>
